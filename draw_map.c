@@ -6,46 +6,66 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 00:27:58 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/18 00:48:03 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:53:10 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	ft_check_textures(t_textures textures)
+void	draw_exit(void *mlx, void *win, int x, int y, int frame)
 {
-	if (!textures.floor || !textures.wall || !textures.left || !textures.right
-		|| !textures.up || !textures.down)
+	static t_animations		exit;
+	char					filename[64];
+	int						i;
+	static struct timeval	lst;
+	struct timeval			now;
+
+	i = 64;
+	if (exit.frame == 0)
 	{
-		ft_printf("Error\n");
-		exit(1);
+		while (frame < 12)
+		{
+			sprintf(filename, "textures/exit/%d.xpm", frame + 1);
+			exit.exit[frame] = mlx_xpm_file_to_image(mlx, filename, &i, &i);
+			frame++;
+		}
+	}
+	mlx_put_image_to_window(mlx, win, exit.exit[exit.frame], x * TS, y * TS);
+	gettimeofday(&now, NULL);
+	if (now.tv_sec > lst.tv_sec || (now.tv_sec == lst.tv_sec && now.tv_usec
+			- lst.tv_usec > 50000))
+	{
+		exit.frame = (exit.frame + 1) % 12;
+		lst = now;
 	}
 }
 
-t_textures	get_textures(void *mlx, int last_key)
+void	draw_coin(void *mlx, void *win, int x, int y, int frame)
 {
-	t_textures	textures;
-	int			i;
+	static t_animations		coin;
+	char					filename[64];
+	int						i;
+	static struct timeval	lst;
+	struct timeval			now;
 
 	i = 64;
-	textures.floor = mlx_xpm_file_to_image(mlx, "textures/Square.xpm", &i, &i);
-	textures.wall = mlx_xpm_file_to_image(mlx, "textures/Wall.xpm", &i, &i);
-	textures.left = mlx_xpm_file_to_image(mlx, "textures/Left.xpm", &i, &i);
-	textures.right = mlx_xpm_file_to_image(mlx, "textures/Right.xpm", &i, &i);
-	textures.up = mlx_xpm_file_to_image(mlx, "textures/Up.xpm", &i, &i);
-	textures.down = mlx_xpm_file_to_image(mlx, "textures/Down.xpm", &i, &i);
-	ft_check_textures(textures);
-	if (last_key == 97)
-		textures.img = textures.left;
-	else if (last_key == 100)
-		textures.img = textures.right;
-	else if (last_key == 119)
-		textures.img = textures.up;
-	else if (last_key == 115)
-		textures.img = textures.down;
-	else
-		textures.img = textures.right;
-	return (textures);
+	if (coin.frame == 0)
+	{
+		while (frame < 12)
+		{
+			sprintf(filename, "textures/coin/%d.xpm", frame + 1);
+			coin.coin[frame] = mlx_xpm_file_to_image(mlx, filename, &i, &i);
+			frame++;
+		}
+	}
+	mlx_put_image_to_window(mlx, win, coin.coin[coin.frame], x * TS, y * TS);
+	gettimeofday(&now, NULL);
+	if (now.tv_sec > lst.tv_sec || (now.tv_sec == lst.tv_sec && now.tv_usec
+			- lst.tv_usec > 50000))
+	{
+		coin.frame = (coin.frame + 1) % 12;
+		lst = now;
+	}
 }
 
 void	draw_map(void *mlx, void *win, char **map, int last_key)
@@ -69,32 +89,27 @@ void	draw_map(void *mlx, void *win, char **map, int last_key)
 				mlx_put_image_to_window(mlx, win, text.wall, x * TS, y * TS);
 			else if (map[y][x] == 'P')
 				mlx_put_image_to_window(mlx, win, text.img, x * TS, y * TS);
+			else if (map[y][x] == 'C')
+				draw_coin(mlx, win, x, y, 0);
+			else if (map[y][x] == 'E')
+				draw_exit(mlx, win, x, y, 0);
 			x++;
 		}
 		y++;
 	}
 }
 
-char	**get_map(void)
+int	loop_hook(void **params)
 {
+	void	*mlx;
+	void	*win;
 	char	**map;
-	int		i;
-	int		fd;
+	int		key;
 
-	fd = open("./maps/map2.ber", O_RDONLY);
-	if (fd == -1)
-	{
-		ft_printf("Failed to open file\n");
-		exit(EXIT_FAILURE);
-	}
-	map = malloc(1000 * sizeof(char));
-	i = 0;
-	map[i] = get_next_line(fd);
-	while (map[i])
-	{
-		i++;
-		map[i] = get_next_line(fd);
-	}
-	close(fd);
-	return (map);
+	key = 0;
+	mlx = params[0];
+	win = params[1];
+	map = params[2];
+	draw_map(mlx, win, map, key);
+	return (0);
 }

@@ -6,11 +6,13 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:55:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/18 00:38:14 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:11:23 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+int			key_press;
 
 void	key_check(int keycode, char **map, int x, int y)
 {
@@ -121,8 +123,33 @@ int	key_hook(int keycode, void **params)
 		exit(0);
 	}
 	if (keycode == 119 || keycode == 115 || keycode == 97 || keycode == 100)
-		info.key = keycode;
-	key_check(keycode, map, info.x, info.y);
-	draw_map(mlx, win, map, info.key);
-	return (0);
+		key_check(keycode, map, info.x, info.y);
+	key_press = keycode;
+	return (keycode);
+}
+
+t_textures	get_textures(void *mlx, int last_key)
+{
+	t_textures	textures;
+	int			i;
+
+	i = 64;
+	last_key = key_press;
+	textures.floor = mlx_xpm_file_to_image(mlx, "textures/Square.xpm", &i, &i);
+	textures.wall = mlx_xpm_file_to_image(mlx, "textures/Wall.xpm", &i, &i);
+	textures.left = mlx_xpm_file_to_image(mlx, "textures/Left.xpm", &i, &i);
+	textures.right = mlx_xpm_file_to_image(mlx, "textures/Right.xpm", &i, &i);
+	textures.up = mlx_xpm_file_to_image(mlx, "textures/Up.xpm", &i, &i);
+	textures.down = mlx_xpm_file_to_image(mlx, "textures/Down.xpm", &i, &i);
+	if (last_key == 97)
+		textures.img = textures.left;
+	else if (last_key == 100)
+		textures.img = textures.right;
+	else if (last_key == 119)
+		textures.img = textures.up;
+	else if (last_key == 115)
+		textures.img = textures.down;
+	else
+		textures.img = textures.right;
+	return (textures);
 }
