@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 20:55:19 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/16 22:43:31 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:21:59 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #  define BUFFER_SIZE 42
 # endif
 
+char	*ft_itoa(int n);
 int		ft_strlen(char *c);
 char	*get_next_line(int fd);
 char	*ft_nline(char *s, int c);

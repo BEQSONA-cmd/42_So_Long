@@ -6,16 +6,42 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 00:27:58 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/19 15:53:10 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/21 23:39:58 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	draw_exit(void *mlx, void *win, int x, int y, int frame)
+void	draw_pacman(void **params, int x, int y, int frame)
 {
 	static t_animations		exit;
-	char					filename[64];
+	char					*c;
+	int						i;
+	static struct timeval	lst;
+	struct timeval			now;
+
+	i = 64;
+	while (frame < 10)
+	{
+		c = load_pacman_texture(frame);
+		exit.exit[frame] = mlx_xpm_file_to_image(params[0], c, &i, &i);
+		frame++;
+	}
+	mlx_put_image_to_window(params[0], params[1], exit.exit[exit.frame], x * TS,
+		y * TS);
+	gettimeofday(&now, NULL);
+	if (now.tv_sec > lst.tv_sec || (now.tv_sec == lst.tv_sec && now.tv_usec
+			- lst.tv_usec > 30000))
+	{
+		exit.frame = (exit.frame + 1) % 10;
+		lst = now;
+	}
+}
+
+void	draw_exit(void **params, int x, int y, int frame)
+{
+	static t_animations		exit;
+	char					*c;
 	int						i;
 	static struct timeval	lst;
 	struct timeval			now;
@@ -25,12 +51,13 @@ void	draw_exit(void *mlx, void *win, int x, int y, int frame)
 	{
 		while (frame < 12)
 		{
-			sprintf(filename, "textures/exit/%d.xpm", frame + 1);
-			exit.exit[frame] = mlx_xpm_file_to_image(mlx, filename, &i, &i);
+			c = combine("textures/exit/", frame + 1, ".xpm");
+			exit.exit[frame] = mlx_xpm_file_to_image(params[0], c, &i, &i);
 			frame++;
 		}
 	}
-	mlx_put_image_to_window(mlx, win, exit.exit[exit.frame], x * TS, y * TS);
+	mlx_put_image_to_window(params[0], params[1], exit.exit[exit.frame], x * TS,
+		y * TS);
 	gettimeofday(&now, NULL);
 	if (now.tv_sec > lst.tv_sec || (now.tv_sec == lst.tv_sec && now.tv_usec
 			- lst.tv_usec > 50000))
@@ -40,10 +67,10 @@ void	draw_exit(void *mlx, void *win, int x, int y, int frame)
 	}
 }
 
-void	draw_coin(void *mlx, void *win, int x, int y, int frame)
+void	draw_coin(void **params, int x, int y, int frame)
 {
 	static t_animations		coin;
-	char					filename[64];
+	char					*c;
 	int						i;
 	static struct timeval	lst;
 	struct timeval			now;
@@ -53,12 +80,13 @@ void	draw_coin(void *mlx, void *win, int x, int y, int frame)
 	{
 		while (frame < 12)
 		{
-			sprintf(filename, "textures/coin/%d.xpm", frame + 1);
-			coin.coin[frame] = mlx_xpm_file_to_image(mlx, filename, &i, &i);
+			c = combine("textures/coin/", frame + 1, ".xpm");
+			coin.coin[frame] = mlx_xpm_file_to_image(params[0], c, &i, &i);
 			frame++;
 		}
 	}
-	mlx_put_image_to_window(mlx, win, coin.coin[coin.frame], x * TS, y * TS);
+	mlx_put_image_to_window(params[0], params[1], coin.coin[coin.frame], x * TS,
+		y * TS);
 	gettimeofday(&now, NULL);
 	if (now.tv_sec > lst.tv_sec || (now.tv_sec == lst.tv_sec && now.tv_usec
 			- lst.tv_usec > 50000))
@@ -68,48 +96,36 @@ void	draw_coin(void *mlx, void *win, int x, int y, int frame)
 	}
 }
 
-void	draw_map(void *mlx, void *win, char **map, int last_key)
+int	draw_map(void **p)
 {
-	unsigned long	y;
-	unsigned long	x;
-	t_textures		text;
-	t_info			info;
+	int		y;
+	int		x;
+	t_info	info;
+	char	**map;
 
-	info = numbers_return(map);
-	text = get_textures(mlx, last_key);
+	map = p[2];
+	info = numbers_return(p, 0);
 	y = 0;
 	while (y < info.height)
 	{
 		x = 0;
 		while (x < info.width)
 		{
+			mlx_string_put(p[0], p[1], info.width * 59, 64 * (info.height
+					+ 0.5), WHITE, "Your text here");
 			if (map[y][x] == '1')
-				mlx_put_image_to_window(mlx, win, text.floor, x * TS, y * TS);
+				mlx_put_image_to_window(p[0], p[1], info.floor, x * TS, y * TS);
 			else if (map[y][x] == '0')
-				mlx_put_image_to_window(mlx, win, text.wall, x * TS, y * TS);
+				mlx_put_image_to_window(p[0], p[1], info.wall, x * TS, y * TS);
 			else if (map[y][x] == 'P')
-				mlx_put_image_to_window(mlx, win, text.img, x * TS, y * TS);
+				draw_pacman(p, x, y, 0);
 			else if (map[y][x] == 'C')
-				draw_coin(mlx, win, x, y, 0);
+				draw_coin(p, x, y, 0);
 			else if (map[y][x] == 'E')
-				draw_exit(mlx, win, x, y, 0);
+				draw_exit(p, x, y, 0);
 			x++;
 		}
 		y++;
 	}
-}
-
-int	loop_hook(void **params)
-{
-	void	*mlx;
-	void	*win;
-	char	**map;
-	int		key;
-
-	key = 0;
-	mlx = params[0];
-	win = params[1];
-	map = params[2];
-	draw_map(mlx, win, map, key);
 	return (0);
 }

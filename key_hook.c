@@ -6,103 +6,40 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:55:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/18 20:11:23 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/21 23:20:10 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int			key_press;
+int		g_keypress;
 
-void	key_check(int keycode, char **map, int x, int y)
+void	ft_movement(int keycode, char **map, int x, int y)
 {
-	if (keycode == 119)
+	if (keycode == 119 && map[y - 1][x] != '1' && map[y - 1][x] != 'E')
 	{
-		if (map[y - 1][x] != '1')
-		{
-			map[y][x] = '0';
-			(y)--;
-			map[y][x] = 'P';
-		}
+		map[y][x] = '0';
+		y--;
+		map[y][x] = 'P';
 	}
-	else if (keycode == 115)
+	else if (keycode == 115 && map[y + 1][x] != '1' && map[y + 1][x] != 'E')
 	{
-		if (map[y + 1][x] != '1')
-		{
-			map[y][x] = '0';
-			(y)++;
-			map[y][x] = 'P';
-		}
-	}
-	else if (keycode == 97)
-	{
-		if (map[y][x - 1] != '1')
-		{
-			map[y][x] = '0';
-			(x)--;
-			map[y][x] = 'P';
-		}
-	}
-	else if (keycode == 100)
-	{
-		if (map[y][x + 1] != '1')
-		{
-			map[y][x] = '0';
-			(x)++;
-			map[y][x] = 'P';
-		}
-	}
-}
-
-int	*player_position(char **map)
-{
-	int	i;
-	int	y;
-	int	x;
-	int	*pos;
-
-	i = 0;
-	y = 0;
-	x = 0;
-	pos = (int *)malloc(2 * sizeof(int));
-	while (map[y] != NULL && !i)
-	{
-		x = 0;
-		while (map[y][x] != '\0')
-		{
-			if (map[y][x] == 'P')
-			{
-				pos[0] = x;
-				pos[1] = y;
-				break ;
-			}
-			x++;
-		}
+		map[y][x] = '0';
 		y++;
+		map[y][x] = 'P';
 	}
-	return (pos);
-}
-
-t_info	numbers_return(char **map)
-{
-	t_info	info;
-	int		height;
-	int		width;
-	int		key;
-
-	height = 0;
-	while (map[height])
-		height++;
-	width = 0;
-	while (map[0][width])
-		width++;
-	key = 100;
-	info.height = height;
-	info.width = width;
-	info.key = key;
-	info.x = player_position(map)[0];
-	info.y = player_position(map)[1];
-	return (info);
+	else if (keycode == 97 && map[y][x - 1] != '1' && map[y][x - 1] != 'E')
+	{
+		map[y][x] = '0';
+		x--;
+		map[y][x] = 'P';
+	}
+	else if (keycode == 100 && map[y][x + 1] != '1' && map[y][x + 1] != 'E')
+	{
+		map[y][x] = '0';
+		x++;
+		map[y][x] = 'P';
+	}
 }
 
 int	key_hook(int keycode, void **params)
@@ -112,44 +49,36 @@ int	key_hook(int keycode, void **params)
 	char	**map;
 	t_info	info;
 
+	g_keypress = keycode;
+	info = numbers_return(params, 0);
 	mlx = params[0];
 	win = params[1];
 	map = params[2];
-	info = numbers_return(map);
 	if (keycode == 65307)
-	{
-		mlx_destroy_window(mlx, win);
-		ft_printf(GREEN "[PERFECT]\n" RESET);
-		exit(0);
-	}
+		free_window(params);
 	if (keycode == 119 || keycode == 115 || keycode == 97 || keycode == 100)
-		key_check(keycode, map, info.x, info.y);
-	key_press = keycode;
-	return (keycode);
+	{
+		if (exit_check(keycode, map, info.x, info.y, c_count(map)) == 1)
+			free_window(params);
+		check_c(keycode, map, info.x, info.y, c_count(map));
+		ft_movement(keycode, map, info.x, info.y);
+	}
+	return (0);
 }
 
-t_textures	get_textures(void *mlx, int last_key)
+char	*load_pacman_texture(int frame)
 {
-	t_textures	textures;
-	int			i;
+	char	*c;
 
-	i = 64;
-	last_key = key_press;
-	textures.floor = mlx_xpm_file_to_image(mlx, "textures/Square.xpm", &i, &i);
-	textures.wall = mlx_xpm_file_to_image(mlx, "textures/Wall.xpm", &i, &i);
-	textures.left = mlx_xpm_file_to_image(mlx, "textures/Left.xpm", &i, &i);
-	textures.right = mlx_xpm_file_to_image(mlx, "textures/Right.xpm", &i, &i);
-	textures.up = mlx_xpm_file_to_image(mlx, "textures/Up.xpm", &i, &i);
-	textures.down = mlx_xpm_file_to_image(mlx, "textures/Down.xpm", &i, &i);
-	if (last_key == 97)
-		textures.img = textures.left;
-	else if (last_key == 100)
-		textures.img = textures.right;
-	else if (last_key == 119)
-		textures.img = textures.up;
-	else if (last_key == 115)
-		textures.img = textures.down;
+	if (g_keypress == 119)
+		c = combine("textures/pacman/up/up", frame + 1, ".xpm");
+	else if (g_keypress == 115)
+		c = combine("textures/pacman/down/down", frame + 1, ".xpm");
+	else if (g_keypress == 97)
+		c = combine("textures/pacman/left/left", frame + 1, ".xpm");
+	else if (g_keypress == 100)
+		c = combine("textures/pacman/right/right", frame + 1, ".xpm");
 	else
-		textures.img = textures.right;
-	return (textures);
+		c = combine("textures/pacman/right/right", frame + 1, ".xpm");
+	return (c);
 }

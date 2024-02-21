@@ -2,11 +2,14 @@ NAME = so_long
 
 SRC = so_long.c\
 	key_hook.c\
-	draw_map.c
+	draw_map.c\
+	sources.c\
 
 OBJ = $(SRC:.c=.o)
 
 CC = cc
+
+CFLAGS = -Wall -Wextra -Werror
 
 MLX_FLAGS = -L/usr/X11/lib -lX11 -lXext
 
@@ -19,7 +22,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(MLX) $(SRCS)
 	ar rc $(NAME) $(OBJ) 
-	$(CC) $(MLX_FLAGS) -o $(NAME) $(SRC) $(SRCS) $(MLX)
+	$(CC) $(CFLAGS) $(MLX_FLAGS) -o $(NAME) $(SRC) $(SRCS) $(MLX)
 
 $(MLX):
 	make -C $(MLX_DIR)

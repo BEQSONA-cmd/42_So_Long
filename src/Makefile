@@ -4,6 +4,7 @@ SRC =ft_printf.c\
 	get_next_line_source.c\
 	ft_printf_source.c\
 	get_next_line.c\
+	source.c\
 
 OBJ = $(SRC:.c=.o)
 
