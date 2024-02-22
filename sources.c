@@ -6,75 +6,17 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:15:25 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/21 23:23:37 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:24:34 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	free_window(void **params)
+void	free_window(t_mlx params)
 {
-	mlx_destroy_window(params[0], params[1]);
+	mlx_destroy_window(params.mlx, params.win);
 	ft_printf(GREEN "PERFECT\n" RESET);
 	exit(0);
-}
-
-int	exit_check(int keycode, char **map, int x, int y, int c)
-{
-	if (keycode == 119 && map[y - 1][x] == 'E' && c == 0)
-	{
-		map[y][x] = '0';
-		y--;
-		map[y][x] = 'P';
-		return (1);
-	}
-	else if (keycode == 115 && map[y + 1][x] == 'E' && c == 0)
-	{
-		map[y][x] = '0';
-		y++;
-		map[y][x] = 'P';
-		return (1);
-	}
-	else if (keycode == 97 && map[y][x - 1] == 'E' && c == 0)
-	{
-		map[y][x] = '0';
-		x--;
-		map[y][x] = 'P';
-		return (1);
-	}
-	else if (keycode == 100 && map[y][x + 1] == 'E' && c == 0)
-	{
-		map[y][x] = '0';
-		x++;
-		map[y][x] = 'P';
-		return (1);
-	}
-	return (0);
-}
-void	check_c(int keycode, char **map, int x, int y, int c)
-{
-	static int	i;
-
-	if (keycode == 119 && map[y - 1][x] == 'C')
-	{
-		i++;
-		printf("%d/%d\n", c + i - 1, i);
-	}
-	else if (keycode == 115 && map[y + 1][x] == 'C')
-	{
-		i++;
-		printf("%d/%d\n", c + i - 1, i);
-	}
-	else if (keycode == 97 && map[y][x - 1] == 'C')
-	{
-		i++;
-		printf("%d/%d\n", c + i - 1, i);
-	}
-	else if (keycode == 100 && map[y][x + 1] == 'C')
-	{
-		i++;
-		printf("%d/%d\n", c + i - 1, i);
-	}
 }
 
 int	*player_position(char **map)
@@ -106,7 +48,7 @@ int	*player_position(char **map)
 	return (pos);
 }
 
-t_info	numbers_return(void **params, int i)
+t_info	numbers_return(t_mlx params, int i)
 {
 	t_info	info;
 	int		height;
@@ -114,11 +56,11 @@ t_info	numbers_return(void **params, int i)
 	int		key;
 	char	**map;
 
-	map = params[2];
-	i = 64;
-	info.floor = mlx_xpm_file_to_image(params[0], "textures/Square.xpm", &i,
+	map = params.map;
+	info.floor = mlx_xpm_file_to_image(params.mlx, "textures/Square.xpm", &i,
 			&i);
-	info.wall = mlx_xpm_file_to_image(params[0], "textures/Wall.xpm", &i, &i);
+	info.wall = mlx_xpm_file_to_image(params.mlx, "textures/Wall.xpm", &i, &i);
+	i = 64;
 	height = 0;
 	while (map[height])
 		height++;

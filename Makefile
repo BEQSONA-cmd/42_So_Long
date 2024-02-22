@@ -4,6 +4,8 @@ SRC = so_long.c\
 	key_hook.c\
 	draw_map.c\
 	sources.c\
+	sources1.c\
+	check.c\
 
 OBJ = $(SRC:.c=.o)
 

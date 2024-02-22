@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 22:50:10 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/21 23:06:13 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/22 21:52:27 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,37 @@ typedef struct s_info
 	void	*wall;
 	int		width;
 	int		height;
+
 	int		x;
 	int		y;
 }			t_info;
 
-int			c_count(char **map);
+typedef struct s_mlx
+{
+	int		keycode;
+	void	*mlx;
+	void	*win;
+	char	**map;
+}			t_mlx;
+
 char		**get_map(char *av);
-int			draw_map(void **params);
-void		free_window(void **params);
+void		check_map(char **c);
+int			c_count(char **map);
+void		check_ones(char **c);
+void		check_square(char **c);
+int			draw_map(t_mlx *params);
+void		free_window(t_mlx params);
 int			*player_position(char **map);
-char		*load_pacman_texture(int frame);
-t_info		numbers_return(void **params, int i);
-int			key_hook(int keycode, void **params);
+void		check_double(char **c, char a);
+t_info		numbers_return(t_mlx params, int i);
+int			key_hook(int keycode, t_mlx *params);
 char		*combine(char *str, int num, char *str2);
+void		ft_move(char **map, int x, int y, int dir);
+char		*load_pacman_texture(int frame, int keycode);
+void		draw_exit(t_mlx *params, int x, int y, int frame);
+void		draw_coin(t_mlx *params, int x, int y, int frame);
 void		ft_movement(int keycode, char **map, int x, int y);
-void		draw_pacman(void **params, int x, int y, int frame);
+void		draw_pacman(t_mlx *params, int x, int y, int frame);
 void		check_c(int keycode, char **map, int x, int y, int c);
 int			exit_check(int keycode, char **map, int x, int y, int c);
 
