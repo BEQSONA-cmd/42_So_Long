@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 20:55:19 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/21 17:21:59 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:14:10 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 char	*ft_itoa(int n);
 int		ft_strlen(char *c);
+int		ft_int_lent(int nb);
 char	*get_next_line(int fd);
 char	*ft_nline(char *s, int c);
 char	*ft_strjoin_null(char *s2);
@@ -42,6 +43,7 @@ int		ft_find_hexlow(size_t n, int i);
 char	*ft_reallocate(char *s1, char *s2);
 int		ft_find_uns(unsigned int n, int i);
 int		ft_find_ptr(unsigned long ptr, int j);
+char	*combines(char *s1, char *s2, char *s3);
 int		ft_next_precent(const char *format, va_list args, int j, int i);
 
 #endif

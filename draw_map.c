@@ -6,27 +6,58 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:12:40 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/24 18:41:45 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:59:47 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	*load_pacman_texture(int frame, int keycode)
+int	draw_win(t_mlx *p)
 {
-	char	*c;
+	void	*loose;
+	int		i;
+	int		j;
+	int		x;
+	int		y;
 
-	if (keycode == W)
-		c = combine("textures/pacman/up/up", frame + 1, ".xpm");
-	else if (keycode == S)
-		c = combine("textures/pacman/down/down", frame + 1, ".xpm");
-	else if (keycode == A)
-		c = combine("textures/pacman/left/left", frame + 1, ".xpm");
-	else if (keycode == D)
-		c = combine("textures/pacman/right/right", frame + 1, ".xpm");
-	else
-		c = combine("textures/pacman/right/right", frame + 1, ".xpm");
-	return (c);
+	y = 0;
+	while (p->map[y])
+	{
+		x = 0;
+		while (p->map[y][x])
+			x++;
+		y++;
+	}
+	i = 489;
+	j = 258;
+	loose = mlx_xpm_file_to_image(p->mlx, "./textures/you_win.xpm", &i, &j);
+	mlx_put_image_to_window(p->mlx, p->win, loose, (x * TS) / 2 - i / 2, (y
+			* TS) / 2 - j / 2);
+	return (0);
+}
+
+int	draw_loose(t_mlx *p)
+{
+	void	*loose;
+	int		i;
+	int		j;
+	int		x;
+	int		y;
+
+	y = 0;
+	while (p->map[y])
+	{
+		x = 0;
+		while (p->map[y][x])
+			x++;
+		y++;
+	}
+	i = 489;
+	j = 258;
+	loose = mlx_xpm_file_to_image(p->mlx, "./textures/you_loose.xpm", &i, &j);
+	mlx_put_image_to_window(p->mlx, p->win, loose, (x * TS) / 2 - i / 2, (y
+			* TS) / 2 - j / 2);
+	return (0);
 }
 
 void	draw_pacman(t_mlx *params, int x, int y, int frame)

@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 20:54:20 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/24 19:17:32 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:21:23 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,4 +121,32 @@ void	check_map(char **c)
 	check_double(c, 'E');
 	check_square(c);
 	check_ones(c);
+}
+
+int	exit_check(int keycode, char **map, int x, int y)
+{
+	int	c;
+
+	c = c_count(map);
+	if (keycode == W && map[y - 1][x] == 'E' && c == 0)
+	{
+		ft_move(map, x, y, 1);
+		return (1);
+	}
+	else if (keycode == S && map[y + 1][x] == 'E' && c == 0)
+	{
+		ft_move(map, x, y, 2);
+		return (1);
+	}
+	else if (keycode == A && map[y][x - 1] == 'E' && c == 0)
+	{
+		ft_move(map, x, y, 3);
+		return (1);
+	}
+	else if (keycode == D && map[y][x + 1] == 'E' && c == 0)
+	{
+		ft_move(map, x, y, 4);
+		return (1);
+	}
+	return (0);
 }

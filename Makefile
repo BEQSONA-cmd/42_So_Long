@@ -7,6 +7,7 @@ SRC = so_long.c\
 	sources1.c\
 	check.c\
 	enemy.c\
+	textures.c\
 
 OBJ = $(SRC:.c=.o)
 

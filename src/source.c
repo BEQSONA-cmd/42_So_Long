@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 17:19:59 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/21 18:29:33 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:12:44 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,17 @@ char	*ft_itoa(int n)
 		i = i / 10;
 	}
 	return (a);
+}
+
+char	*combines(char *s1, char *s2, char *s3)
+{
+	char	*a;
+	char	*c;
+
+	a = ft_strjoin(s1, s2);
+	c = ft_strjoin(a, s3);
+	free(a);
+	return (c);
 }
 
 char	*combine(char *str, int num, char *str2)

@@ -6,31 +6,51 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:15:25 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 14:52:34 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:27:36 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	free_window(t_mlx params)
+t_position	enemys_positioon(char **map)
 {
-	mlx_destroy_window(params.mlx, params.win);
-	ft_printf(GREEN "PERFECT\n" RESET);
-	exit(0);
+	int			y;
+	int			x;
+	t_position	pos;
+
+	y = 0;
+	x = 0;
+	pos.x = (int *)malloc(100 * sizeof(int));
+	pos.y = (int *)malloc(100 * sizeof(int));
+	pos.count = 0;
+	while (map[y] != NULL)
+	{
+		x = 0;
+		while (map[y][x] != '\0')
+		{
+			if (map[y][x] == 'S')
+			{
+				pos.x[pos.count] = x;
+				pos.y[pos.count] = y;
+				pos.count++;
+			}
+			x++;
+		}
+		y++;
+	}
+	return (pos);
 }
 
 int	*enemy_position(char **map)
 {
-	int	i;
 	int	y;
 	int	x;
 	int	*pos;
 
-	i = 0;
 	y = 0;
 	x = 0;
 	pos = (int *)malloc(2 * sizeof(int));
-	while (map[y] != NULL && !i)
+	while (map[y] != NULL)
 	{
 		x = 0;
 		while (map[y][x] != '\0')
@@ -50,16 +70,14 @@ int	*enemy_position(char **map)
 
 int	*player_position(char **map)
 {
-	int	i;
 	int	y;
 	int	x;
 	int	*pos;
 
-	i = 0;
 	y = 0;
 	x = 0;
 	pos = (int *)malloc(2 * sizeof(int));
-	while (map[y] != NULL && !i)
+	while (map[y] != NULL)
 	{
 		x = 0;
 		while (map[y][x] != '\0')
@@ -77,36 +95,7 @@ int	*player_position(char **map)
 	return (pos);
 }
 
-t_info	numbers_return(t_mlx params, int i)
-{
-	t_info	info;
-	int		height;
-	int		width;
-	int		key;
-	char	**map;
-
-	map = params.map;
-	info.floor = mlx_xpm_file_to_image(params.mlx, "textures/Square.xpm", &i,
-			&i);
-	info.wall = mlx_xpm_file_to_image(params.mlx, "textures/Wall.xpm", &i, &i);
-	i = 64;
-	height = 0;
-	while (map[height])
-		height++;
-	width = 0;
-	while (map[0][width])
-		width++;
-	key = D;
-	info.height = height;
-	info.width = width;
-	info.x = player_position(map)[0];
-	info.y = player_position(map)[1];
-	info.enemy_x = enemy_position(map)[0];
-	info.enemy_y = enemy_position(map)[1];
-	return (info);
-}
-
-int	c_count_from_zero(char **map, int *previous_c)
+int	from_zero(char **map, int *previous_c)
 {
 	int	i;
 	int	j;
