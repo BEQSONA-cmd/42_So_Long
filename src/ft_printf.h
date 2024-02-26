@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 20:55:19 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 21:14:10 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/26 23:56:09 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int		ft_find_char(int c, int i);
 int		ft_find_str(char *a, int i);
 int		ft_find_number(int n, int i);
 int		ft_printf(const char *a, ...);
-int		ft_strcmp(char *s1, char *s2);
 int		ft_find_hexup(size_t n, int i);
 int		ft_ptr(unsigned long nb, int j);
 char	*ft_strjoin(char *s1, char *s2);
