@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:12:40 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/22 19:12:40 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:41:45 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ char	*load_pacman_texture(int frame, int keycode)
 {
 	char	*c;
 
-	if (keycode == 119)
+	if (keycode == W)
 		c = combine("textures/pacman/up/up", frame + 1, ".xpm");
-	else if (keycode == 115)
+	else if (keycode == S)
 		c = combine("textures/pacman/down/down", frame + 1, ".xpm");
-	else if (keycode == 97)
+	else if (keycode == A)
 		c = combine("textures/pacman/left/left", frame + 1, ".xpm");
-	else if (keycode == 100)
+	else if (keycode == D)
 		c = combine("textures/pacman/right/right", frame + 1, ".xpm");
 	else
 		c = combine("textures/pacman/right/right", frame + 1, ".xpm");

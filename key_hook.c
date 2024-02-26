@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:55:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/22 19:25:19 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:45:50 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,36 @@ void	ft_move(char **map, int x, int y, int num)
 	}
 }
 
-void	ft_movement(int keycode, char **map, int x, int y)
+int	ft_movement(int keycode, char **map, int x, int y)
 {
-	if (keycode == 119 && map[y - 1][x] != '1' && map[y - 1][x] != 'E')
+	int	i;
+
+	i = 0;
+	if (keycode == W && map[y - 1][x] != '1' && map[y - 1][x] != 'E')
+	{
+		if (map[y - 1][x] == 'S')
+			i = 1;
 		ft_move(map, x, y, 1);
-	else if (keycode == 115 && map[y + 1][x] != '1' && map[y + 1][x] != 'E')
+	}
+	else if (keycode == S && map[y + 1][x] != '1' && map[y + 1][x] != 'E')
+	{
+		if (map[y + 1][x] == 'S')
+			i = 1;
 		ft_move(map, x, y, 2);
-	else if (keycode == 97 && map[y][x - 1] != '1' && map[y][x - 1] != 'E')
+	}
+	else if (keycode == A && map[y][x - 1] != '1' && map[y][x - 1] != 'E')
+	{
+		if (map[y][x - 1] == 'S')
+			i = 1;
 		ft_move(map, x, y, 3);
-	else if (keycode == 100 && map[y][x + 1] != '1' && map[y][x + 1] != 'E')
+	}
+	else if (keycode == D && map[y][x + 1] != '1' && map[y][x + 1] != 'E')
+	{
+		if (map[y][x + 1] == 'S')
+			i = 1;
 		ft_move(map, x, y, 4);
+	}
+	return (i);
 }
 
 int	key_hook(int keycode, t_mlx *params)
@@ -57,6 +77,7 @@ int	key_hook(int keycode, t_mlx *params)
 	void	*mlx;
 	void	*win;
 	char	**map;
+	
 	t_info	info;
 
 	info = numbers_return(*params, 0);
@@ -64,15 +85,13 @@ int	key_hook(int keycode, t_mlx *params)
 	win = params->win;
 	map = params->map;
 	params->keycode = keycode;
-	if (keycode == 65307)
+	if (keycode == ESC)
 		free_window(*params);
-	if (keycode == 119 || keycode == 115 || keycode == 97 || keycode == 100)
+	if (keycode == W || keycode == S || keycode == A || keycode == D)
 	{
 		if (exit_check(keycode, map, info.x, info.y, c_count(map)) == 1)
-			free_window(*params);
-		check_c(keycode, map, info.x, info.y, c_count(map));
+			mlx_loop_hook(params->mlx, draw_win, (void *)params);
 		ft_movement(keycode, map, info.x, info.y);
 	}
-	draw_map((t_mlx *)params);
 	return (0);
 }
