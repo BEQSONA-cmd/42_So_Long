@@ -6,11 +6,11 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:59:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 23:49:53 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/27 22:16:34 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
 
 char	*load_enemy_texture(int frame, int key)
 {
@@ -48,6 +48,7 @@ t_numbers	get_numbers(t_mlx *p)
 	int			i;
 	int			j;
 	char		digit_char[2];
+	char		*c;
 
 	i = 64;
 	j = 0;
@@ -57,72 +58,63 @@ t_numbers	get_numbers(t_mlx *p)
 	{
 		digit_char[0] = '0' + j;
 		digit_char[1] = '\0';
-		nums.digits[j] = mlx_xpm_file_to_image(p->mlx,
-				combines("./textures/nums/", digit_char, ".xpm"), &i, &i);
+		c = combines("./textures/nums/", digit_char, ".xpm");
+		nums.digits[j] = mlx_xpm_file_to_image(p->mlx, c, &i, &i);
+		free(c);
 		j++;
 	}
 	return (nums);
 }
 
-void	draw_coin_count(t_mlx *p, int c, int width, int height)
+int	get_x_position(int moves, int width, int which)
 {
-	t_numbers	nums;
-	int			x;
-	int			y;
-	int			digit;
+	int	x;
 
-	nums = get_numbers(p);
-	if (ft_int_lent(c) == 1)
-		x = (width + 320) - ft_int_lent(c) * 64;
-	else
-		x = (width + 440) - ft_int_lent(c) * 64;
-	y = (64 * (height + 1)) - 64;
-	if (c == 0)
+	x = 0;
+	if (which == 1)
 	{
-		mlx_put_image_to_window(p->mlx, p->win, nums.coins, width / 2, y);
-		mlx_put_image_to_window(p->mlx, p->win, nums.digits[0], x, y);
-		return ;
+		if (ft_int_lent(moves) == 1)
+			x = ((width - 8) * 64 + 330) - ft_int_lent(moves) * 64;
+		else
+			x = ((width - 8) * 64 + 330 + 125 * (ft_int_lent(moves) - 1))
+				- ft_int_lent(moves) * 64;
 	}
-	while (c > 0)
+	else if (which == 2)
 	{
-		digit = c % 10;
-		mlx_put_image_to_window(p->mlx, p->win, nums.coins, width / 2, y);
-		mlx_put_image_to_window(p->mlx, p->win, nums.digits[digit], x, y);
-		c = c / 10;
-		x = x - 64;
+		if (ft_int_lent(moves) == 1)
+			x = (width + 320) - ft_int_lent(moves) * 64;
+		else
+			x = ((width + 320) + 125 * (ft_int_lent(moves) - 1))
+				- ft_int_lent(moves) * 64;
 	}
+	return (x);
 }
 
-void	draw_moves(t_mlx *p, int width, int height)
+t_info	numbers_return(t_mlx params, int i)
 {
-	t_numbers	nums;
-	int			x;
-	int			y;
-	int			digit;
-	int			moves;
+	t_info	info;
+	int		height;
+	int		width;
+	int		key;
+	char	**map;
 
-	moves = p->moves;
-	nums = get_numbers(p);
-	if (ft_int_lent(moves) == 1)
-		x = ((width - 8) * 64 + 330) - ft_int_lent(moves) * 64;
-	else
-		x = ((width - 8) * 64 + 330 + 125 * (ft_int_lent(moves) - 1))
-			- ft_int_lent(moves) * 64;
-	y = (64 * (height + 1)) - 64;
-	if (moves == 0)
-	{
-		mlx_put_image_to_window(p->mlx, p->win, nums.moves, (width - 8) * 64,
-			y);
-		mlx_put_image_to_window(p->mlx, p->win, nums.digits[0], x, y);
-		return ;
-	}
-	while (moves > 0)
-	{
-		digit = moves % 10;
-		mlx_put_image_to_window(p->mlx, p->win, nums.moves, (width - 8) * 64,
-			y);
-		mlx_put_image_to_window(p->mlx, p->win, nums.digits[digit], x, y);
-		moves = moves / 10;
-		x = x - 64;
-	}
+	map = params.map;
+	info.floor = mlx_xpm_file_to_image(params.mlx, "textures/Square.xpm", &i,
+			&i);
+	info.wall = mlx_xpm_file_to_image(params.mlx, "textures/Wall.xpm", &i, &i);
+	i = 64;
+	height = 0;
+	while (map[height])
+		height++;
+	width = 0;
+	while (map[0][width])
+		width++;
+	key = D;
+	info.height = height;
+	info.width = width;
+	info.x = player_position(map, 'P', 1);
+	info.y = player_position(map, 'P', 2);
+	info.enemy_x = player_position(map, 'S', 1);
+	info.enemy_y = player_position(map, 'S', 2);
+	return (info);
 }

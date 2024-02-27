@@ -6,11 +6,11 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 20:54:20 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 20:21:23 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/27 21:20:04 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
 
 void	check_ones(char **c)
 {
@@ -22,20 +22,15 @@ void	check_ones(char **c)
 	while (c[i])
 	{
 		if (c[i][0] != '1' || c[i][j - 1] != '1')
-		{
-			write(2, "Error\n", 6);
-			exit(1);
-		}
+			free_map(c);
 		i++;
 	}
-	while (c[0][j - 1])
+	j = 0;
+	while (j < ft_strlen(c[0]) - 1)
 	{
-		if (c[0][j - 1] != '1' || c[i - 1][j - 1] != '1')
-		{
-			write(2, "Error\n", 6);
-			exit(1);
-		}
-		j--;
+		if (c[0][j] != '1' || c[i - 1][j] != '1')
+			free_map(c);
+		j++;
 	}
 }
 
@@ -50,18 +45,14 @@ void	check_square(char **c)
 		if (ft_strlen(c[i]) == ft_strlen(c[i + 1]))
 		{
 			if (c[i + 2] == NULL)
-			{
-				write(2, "Error\n", 6);
-				exit(1);
-			}
+				free_map(c);
 		}
 		if (ft_strlen(c[i]) != ft_strlen(c[i + 1]))
 		{
 			j = ft_strlen(c[i + 1]);
 			if (c[i + 2] == NULL && ft_strlen(c[i]) - 1 == j)
 				return ;
-			write(2, "Error\n", 6);
-			exit(1);
+			free_map(c);
 		}
 		i++;
 	}
@@ -84,10 +75,7 @@ void	check_double(char **c, char a)
 			{
 				x++;
 				if (x > 2)
-				{
-					write(2, "Error\n", 6);
-					exit(1);
-				}
+					free_map(c);
 			}
 			j++;
 		}
@@ -109,10 +97,7 @@ void	check_map(char **c)
 			if (c[i][j] != '0' && c[i][j] != '1' && c[i][j] != 'C'
 				&& c[i][j] != 'S' && c[i][j] != 'E' && c[i][j] != 'P'
 				&& c[i][j] != '\n')
-			{
-				write(2, "Error\n", 6);
-				exit(1);
-			}
+				free_map(c);
 			j++;
 		}
 		i++;

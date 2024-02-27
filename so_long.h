@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 22:50:10 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 22:07:36 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:44:22 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+# define MAP_SIZE 100
 # define ESC 65307
 # define W 119
 # define A 97
@@ -86,17 +87,17 @@ int			draw_win(t_mlx *p);
 char		**get_map(char *av);
 void		check_map(char **c);
 int			c_count(char **map);
+void		free_map(char **map);
 void		check_ones(char **c);
 int			draw_loose(t_mlx *p);
 t_numbers	get_numbers(t_mlx *p);
 void		check_square(char **c);
 int			draw_everything(t_mlx *p);
 void		free_window(t_mlx params);
-int			*enemy_position(char **map);
 t_position	enemys_positioon(char **map);
-int			*player_position(char **map);
 void		check_double(char **c, char a);
 int			*point_return(char **map, int *j);
+int			if_equals(int j, int e_x, int p_x);
 t_info		numbers_return(t_mlx params, int i);
 int			key_hook(int keycode, t_mlx *params);
 int			from_zero(char **map, int *previous_c);
@@ -106,6 +107,8 @@ void		ft_move(char **map, int x, int y, int dir);
 void		draw_moves(t_mlx *p, int width, int height);
 char		*load_pacman_texture(int frame, int keycode);
 int			enemy_move(char **map, int x, int y, int num);
+int			player_position(char **map, char c, int which);
+int			get_x_position(int moves, int width, int which);
 int			ft_find_one(int point, char **map, int x, int y);
 int			exit_check(int keycode, char **map, int x, int y);
 void		draw_exit(t_mlx *params, int x, int y, int frame);
@@ -115,6 +118,6 @@ void		draw_map(t_mlx *p, char **map, t_info info, int y);
 int			ft_movement(int keycode, char **map, int x, int y);
 void		draw_pacman(t_mlx *params, int x, int y, int frame);
 void		draw_coin_count(t_mlx *p, int c, int width, int height);
-int			*ft_enemy_movement(const int *point, char **map, int *x, int *y);
+int			*ft_enemy_movement(const int *point, char **map, t_position posi);
 
 #endif

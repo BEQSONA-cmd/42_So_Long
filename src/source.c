@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 17:19:59 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 21:12:44 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:04:24 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,30 @@ char	*combine(char *str, int num, char *str2)
 	n = ft_strjoin(c, str2);
 	free(c);
 	return (n);
+}
+
+char	*ft_strdup(char *s1)
+{
+	unsigned int	j;
+	unsigned int	i;
+	char			*a;
+
+	j = ft_strlen(s1);
+	i = 0;
+	a = malloc(((j) * sizeof(char)) + 1);
+	if (s1 == NULL)
+	{
+		return (malloc(0));
+	}
+	if (a == NULL)
+	{
+		return (NULL);
+	}
+	while (i < j)
+	{
+		a[i] = s1[i];
+		i++;
+	}
+	a[i] = '\0';
+	return (a);
 }

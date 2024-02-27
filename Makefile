@@ -1,19 +1,21 @@
 NAME = so_long
 
 SRC = so_long.c\
-	key_hook.c\
-	draw_map.c\
-	sources.c\
-	sources1.c\
-	check.c\
-	enemy.c\
-	textures.c\
+	display/draw_map2.c\
+	display/draw_map.c\
+	display/sources.c\
+	display/check.c\
+	display/textures.c\
+	enemy/enemy.c\
+	enemy/movement.c\
+	enemy/enemy_move.c\
+	enemy/enemy_find_one.c\
 
 OBJ = $(SRC:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 MLX_FLAGS = -L/usr/X11/lib -lX11 -lXext -lm
 
@@ -46,3 +48,5 @@ re: fclean $(NAME)
 .PHONY:	all clean fclean re bonus
 
 # find . -name "*.c" -not -path "./minilibx-linux/*" -exec norminette {} +
+# valgrind --tool=memcheck
+# valgrind --leak-check=full

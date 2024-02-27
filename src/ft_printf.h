@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 20:55:19 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 23:56:09 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/27 21:53:05 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 char	*ft_itoa(int n);
 int		ft_strlen(char *c);
 int		ft_int_lent(int nb);
+char	*ft_strdup(char *s1);
 char	*get_next_line(int fd);
 char	*ft_nline(char *s, int c);
 char	*ft_strjoin_null(char *s2);

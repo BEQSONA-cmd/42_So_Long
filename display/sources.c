@@ -6,11 +6,18 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:15:25 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 21:27:36 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:03:58 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
+
+void	free_window(t_mlx params)
+{
+	mlx_destroy_window(params.mlx, params.win);
+	ft_printf(GREEN "PERFECT\n" RESET);
+	exit(0);
+}
 
 t_position	enemys_positioon(char **map)
 {
@@ -20,8 +27,8 @@ t_position	enemys_positioon(char **map)
 
 	y = 0;
 	x = 0;
-	pos.x = (int *)malloc(100 * sizeof(int));
-	pos.y = (int *)malloc(100 * sizeof(int));
+	pos.x = (int *)malloc(MAP_SIZE * sizeof(int));
+	pos.y = (int *)malloc(MAP_SIZE * sizeof(int));
 	pos.count = 0;
 	while (map[y] != NULL)
 	{
@@ -41,58 +48,30 @@ t_position	enemys_positioon(char **map)
 	return (pos);
 }
 
-int	*enemy_position(char **map)
+int	player_position(char **map, char c, int which)
 {
 	int	y;
 	int	x;
-	int	*pos;
 
 	y = 0;
 	x = 0;
-	pos = (int *)malloc(2 * sizeof(int));
 	while (map[y] != NULL)
 	{
 		x = 0;
 		while (map[y][x] != '\0')
 		{
-			if (map[y][x] == 'S')
+			if (map[y][x] == c)
 			{
-				pos[0] = x;
-				pos[1] = y;
-				break ;
+				if (which == 1)
+					return (x);
+				else if (which == 2)
+					return (y);
 			}
 			x++;
 		}
 		y++;
 	}
-	return (pos);
-}
-
-int	*player_position(char **map)
-{
-	int	y;
-	int	x;
-	int	*pos;
-
-	y = 0;
-	x = 0;
-	pos = (int *)malloc(2 * sizeof(int));
-	while (map[y] != NULL)
-	{
-		x = 0;
-		while (map[y][x] != '\0')
-		{
-			if (map[y][x] == 'P')
-			{
-				pos[0] = x;
-				pos[1] = y;
-				break ;
-			}
-			x++;
-		}
-		y++;
-	}
-	return (pos);
+	return (0);
 }
 
 int	from_zero(char **map, int *previous_c)

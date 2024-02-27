@@ -6,57 +6,67 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:12:40 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 19:59:47 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:22:31 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
 
-int	draw_win(t_mlx *p)
+void	draw_map(t_mlx *p, char **map, t_info i, int y)
 {
-	void	*loose;
-	int		i;
-	int		j;
-	int		x;
-	int		y;
+	int	x;
 
 	y = 0;
-	while (p->map[y])
+	while (y < i.height)
 	{
 		x = 0;
-		while (p->map[y][x])
+		while (x < i.width)
+		{
+			if (map[y][x] == '1')
+				mlx_put_image_to_window(p->mlx, p->win, i.floor, x * TS, y
+					* TS);
+			else if (map[y][x] == '0')
+				mlx_put_image_to_window(p->mlx, p->win, i.wall, x * TS, y * TS);
+			else if (map[y][x] == 'P')
+				draw_pacman(p, x, y, 0);
+			else if (map[y][x] == 'C')
+				draw_coin(p, x, y, 0);
+			else if (map[y][x] == 'E')
+				draw_exit(p, x, y, 0);
+			else if (map[y][x] == 'S')
+				draw_enemy(p, x, y, 0);
 			x++;
+		}
 		y++;
 	}
-	i = 489;
-	j = 258;
-	loose = mlx_xpm_file_to_image(p->mlx, "./textures/you_win.xpm", &i, &j);
-	mlx_put_image_to_window(p->mlx, p->win, loose, (x * TS) / 2 - i / 2, (y
-			* TS) / 2 - j / 2);
-	return (0);
 }
 
-int	draw_loose(t_mlx *p)
+int	draw_everything(t_mlx *p)
 {
-	void	*loose;
-	int		i;
-	int		j;
-	int		x;
-	int		y;
+	t_info		info;
+	char		**map;
+	static int	previous_c = -1;
+	t_position	posi;
+	const int	*i;
 
-	y = 0;
-	while (p->map[y])
+	map = p->map;
+	info = numbers_return(*p, 0);
+	if (previous_c == -1)
+		previous_c = c_count(map);
+	draw_map(p, p->map, info, 0);
+	draw_coin_count(p, from_zero(map, &previous_c), info.width, info.height);
+	draw_moves(p, info.width, info.height);
+	p->frame++;
+	if (p->frame >= 30)
 	{
-		x = 0;
-		while (p->map[y][x])
-			x++;
-		y++;
+		posi = enemys_positioon(map);
+		i = point_return(map, p->temp_j);
+		p->temp_j = ft_enemy_movement(i, map, posi);
+		p->key = i[0];
+		p->frame = 0;
+		if (p->temp_j[0] == 15)
+			mlx_loop_hook(p->mlx, draw_loose, (void *)p);
 	}
-	i = 489;
-	j = 258;
-	loose = mlx_xpm_file_to_image(p->mlx, "./textures/you_loose.xpm", &i, &j);
-	mlx_put_image_to_window(p->mlx, p->win, loose, (x * TS) / 2 - i / 2, (y
-			* TS) / 2 - j / 2);
 	return (0);
 }
 
@@ -73,6 +83,7 @@ void	draw_pacman(t_mlx *params, int x, int y, int frame)
 	{
 		c = load_pacman_texture(frame, params->keycode);
 		exit.exit[frame] = mlx_xpm_file_to_image(params->mlx, c, &i, &i);
+		free(c);
 		frame++;
 	}
 	mlx_put_image_to_window(params->mlx, params->win, exit.exit[exit.frame], x
@@ -86,60 +97,60 @@ void	draw_pacman(t_mlx *params, int x, int y, int frame)
 	}
 }
 
-void	draw_exit(t_mlx *params, int x, int y, int frame)
+void	draw_exit(t_mlx *p, int x, int y, int frame)
 {
-	static t_animations		exit;
+	static t_animations		ex;
 	char					*c;
 	int						i;
 	static struct timeval	lst;
 	struct timeval			now;
 
 	i = 64;
-	if (exit.frame == 0)
+	if (ex.frame == 0)
 	{
 		while (frame < 12)
 		{
 			c = combine("textures/exit/", frame + 1, ".xpm");
-			exit.exit[frame] = mlx_xpm_file_to_image(params->mlx, c, &i, &i);
+			ex.exit[frame] = mlx_xpm_file_to_image(p->mlx, c, &i, &i);
+			free(c);
 			frame++;
 		}
 	}
-	mlx_put_image_to_window(params->mlx, params->win, exit.exit[exit.frame], x
-		* TS, y * TS);
+	mlx_put_image_to_window(p->mlx, p->win, ex.exit[ex.frame], x * TS, y * TS);
 	gettimeofday(&now, NULL);
 	if (now.tv_sec > lst.tv_sec || (now.tv_sec == lst.tv_sec && now.tv_usec
 			- lst.tv_usec > 50000))
 	{
-		exit.frame = (exit.frame + 1) % 12;
+		ex.frame = (ex.frame + 1) % 12;
 		lst = now;
 	}
 }
 
-void	draw_coin(t_mlx *params, int x, int y, int frame)
+void	draw_coin(t_mlx *p, int x, int y, int frame)
 {
-	static t_animations		coin;
+	static t_animations		co;
 	char					*c;
 	int						i;
 	static struct timeval	lst;
 	struct timeval			now;
 
 	i = 64;
-	if (coin.frame == 0)
+	if (co.frame == 0)
 	{
 		while (frame < 12)
 		{
 			c = combine("textures/coin/", frame + 1, ".xpm");
-			coin.coin[frame] = mlx_xpm_file_to_image(params->mlx, c, &i, &i);
+			co.coin[frame] = mlx_xpm_file_to_image(p->mlx, c, &i, &i);
+			free(c);
 			frame++;
 		}
 	}
-	mlx_put_image_to_window(params->mlx, params->win, coin.coin[coin.frame], x
-		* TS, y * TS);
+	mlx_put_image_to_window(p->mlx, p->win, co.coin[co.frame], x * TS, y * TS);
 	gettimeofday(&now, NULL);
 	if (now.tv_sec > lst.tv_sec || (now.tv_sec == lst.tv_sec && now.tv_usec
 			- lst.tv_usec > 50000))
 	{
-		coin.frame = (coin.frame + 1) % 12;
+		co.frame = (co.frame + 1) % 12;
 		lst = now;
 	}
 }

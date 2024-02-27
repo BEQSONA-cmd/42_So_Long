@@ -6,11 +6,26 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:50:24 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/26 21:25:34 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:41:43 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	free_map(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+	write(2, "Error\n", 6);
+	exit(1);
+}
 
 char	**get_map(char *av)
 {
@@ -21,20 +36,21 @@ char	**get_map(char *av)
 
 	c = ft_strjoin("./maps/", av);
 	fd = open(c, O_RDONLY);
+	free(c);
 	if (fd == -1)
 	{
-		ft_printf("Failed to open file\n");
+		write(2, "Error\n", 6);
 		exit(1);
 	}
-	map = malloc(1000 * sizeof(char));
+	map = malloc(sizeof(char *) * MAP_SIZE);
 	i = 0;
-	map[i] = get_next_line(fd);
-	while (map[i])
+	while (1)
 	{
-		i++;
 		map[i] = get_next_line(fd);
+		if (!map[i])
+			break ;
+		i++;
 	}
-	map[i] = NULL;
 	check_map(map);
 	close(fd);
 	return (map);
@@ -43,21 +59,25 @@ char	**get_map(char *av)
 int	main(int ac, char **av)
 {
 	t_info	info;
-	char	*c;
 	t_mlx	*par;
 
+	if (ac != 2)
+	{
+		write(2, "Error\n", 6);
+		exit(1);
+	}
 	par = malloc(sizeof(t_mlx));
 	par->map = get_map(av[1]);
 	par->frame = 0;
-	par->temp_j = malloc(100 * sizeof(int));
+	par->temp_j = malloc(MAP_SIZE * sizeof(int));
 	par->mlx = mlx_init();
-	c = ft_itoa(c_count(par->map));
 	info = numbers_return(*par, ac);
+	if (info.width < 14)
+		info.width = 14;
 	par->win = mlx_new_window(par->mlx, (info.width - 1) * 64, (info.height + 1)
 			* 64, "So_Long");
 	mlx_key_hook(par->win, key_hook, (void *)par);
 	mlx_loop_hook(par->mlx, draw_everything, (void *)par);
 	mlx_loop(par->mlx);
-	free(par->map);
 	return (0);
 }
