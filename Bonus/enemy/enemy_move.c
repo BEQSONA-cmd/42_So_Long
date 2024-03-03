@@ -6,11 +6,11 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 12:43:24 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/27 15:55:47 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/02 23:24:55 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../so_long.h"
+#include "../../so_long.h"
 
 int	enemy_move_1(char **map, int x, int y)
 {

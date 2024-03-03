@@ -6,22 +6,22 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:59:50 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/27 22:16:34 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/02 23:48:29 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../so_long.h"
+#include "../../so_long.h"
 
 char	*load_enemy_texture(int frame, int key)
 {
 	char	*c;
 
 	if (key == 4)
-		c = combine("textures/enemy/right/", frame + 1, ".xpm");
+		c = combine("Bonus/textures/enemy/right/", frame + 1, ".xpm");
 	else if (key == 3)
-		c = combine("textures/enemy/left/", frame + 1, ".xpm");
+		c = combine("Bonus/textures/enemy/left/", frame + 1, ".xpm");
 	else
-		c = combine("textures/enemy/right/", frame + 1, ".xpm");
+		c = combine("Bonus/textures/enemy/right/", frame + 1, ".xpm");
 	return (c);
 }
 
@@ -30,15 +30,15 @@ char	*load_pacman_texture(int frame, int keycode)
 	char	*c;
 
 	if (keycode == W)
-		c = combine("textures/pacman/up/up", frame + 1, ".xpm");
+		c = combine("Bonus/textures/pacman/up/up", frame + 1, ".xpm");
 	else if (keycode == S)
-		c = combine("textures/pacman/down/down", frame + 1, ".xpm");
+		c = combine("Bonus/textures/pacman/down/down", frame + 1, ".xpm");
 	else if (keycode == A)
-		c = combine("textures/pacman/left/left", frame + 1, ".xpm");
+		c = combine("Bonus/textures/pacman/left/left", frame + 1, ".xpm");
 	else if (keycode == D)
-		c = combine("textures/pacman/right/right", frame + 1, ".xpm");
+		c = combine("Bonus/textures/pacman/right/right", frame + 1, ".xpm");
 	else
-		c = combine("textures/pacman/right/right", frame + 1, ".xpm");
+		c = combine("Bonus/textures/pacman/right/right", frame + 1, ".xpm");
 	return (c);
 }
 
@@ -52,13 +52,15 @@ t_numbers	get_numbers(t_mlx *p)
 
 	i = 64;
 	j = 0;
-	nums.coins = mlx_xpm_file_to_image(p->mlx, "./textures/coins.xpm", &i, &i);
-	nums.moves = mlx_xpm_file_to_image(p->mlx, "./textures/moves.xpm", &i, &i);
+	nums.coins = mlx_xpm_file_to_image(p->mlx, "Bonus/textures/coins.xpm", &i,
+			&i);
+	nums.moves = mlx_xpm_file_to_image(p->mlx, "Bonus/textures/moves.xpm", &i,
+			&i);
 	while (j < 10)
 	{
 		digit_char[0] = '0' + j;
 		digit_char[1] = '\0';
-		c = combines("./textures/nums/", digit_char, ".xpm");
+		c = combines("Bonus/textures/nums/", digit_char, ".xpm");
 		nums.digits[j] = mlx_xpm_file_to_image(p->mlx, c, &i, &i);
 		free(c);
 		j++;
@@ -99,9 +101,6 @@ t_info	numbers_return(t_mlx params, int i)
 	char	**map;
 
 	map = params.map;
-	info.floor = mlx_xpm_file_to_image(params.mlx, "textures/Square.xpm", &i,
-			&i);
-	info.wall = mlx_xpm_file_to_image(params.mlx, "textures/Wall.xpm", &i, &i);
 	i = 64;
 	height = 0;
 	while (map[height])

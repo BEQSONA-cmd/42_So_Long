@@ -6,11 +6,11 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 12:53:52 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/27 23:04:05 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/03 16:33:49 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../so_long.h"
+#include "../../so_long.h"
 
 int	if_ey_is_more(int j, int e_x, int p_x)
 {
@@ -106,5 +106,33 @@ int	*point_return(char **map, int *j)
 			i[k] = if_equals(j[k], posi.x[k], p_x);
 		k++;
 	}
+	free(posi.x);
+	free(posi.y);
 	return (i);
+}
+
+int	check_level(char *level)
+{
+	int	j;
+
+	j = 0;
+	if (level == NULL)
+		j = 30;
+	else
+	{
+		if (ft_strcmp(level, "easy") == 0)
+			j = 40;
+		else if (ft_strcmp(level, "normal") == 0)
+			j = 20;
+		else if (ft_strcmp(level, "hard") == 0)
+			j = 10;
+		else if (ft_strcmp(level, "impossible") == 0)
+			j = 5;
+		else
+		{
+			write(2, "Error\n", 6);
+			exit(1);
+		}
+	}
+	return (j);
 }

@@ -6,11 +6,11 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 20:54:20 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/27 21:20:04 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/03 18:15:11 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../so_long.h"
+#include "../../so_long.h"
 
 void	check_ones(char **c)
 {
@@ -32,6 +32,9 @@ void	check_ones(char **c)
 			free_map(c);
 		j++;
 	}
+	check_double(c, 'P');
+	check_double(c, 'E');
+	check_square(c);
 }
 
 void	check_square(char **c)
@@ -87,7 +90,11 @@ void	check_map(char **c)
 {
 	int	i;
 	int	j;
+	int	x;
+	int	y;
 
+	if (c == NULL || c[0] == NULL)
+		free_map(c);
 	i = 0;
 	while (c[i])
 	{
@@ -95,16 +102,15 @@ void	check_map(char **c)
 		while (c[i][j])
 		{
 			if (c[i][j] != '0' && c[i][j] != '1' && c[i][j] != 'C'
-				&& c[i][j] != 'S' && c[i][j] != 'E' && c[i][j] != 'P'
-				&& c[i][j] != '\n')
+				&& c[i][j] != 'E' && c[i][j] != 'P' && c[i][j] != '\n')
 				free_map(c);
 			j++;
 		}
 		i++;
 	}
-	check_double(c, 'P');
-	check_double(c, 'E');
-	check_square(c);
+	x = player_position(c, 'P', 1);
+	y = player_position(c, 'P', 2);
+	check_valid(c, x, y);
 	check_ones(c);
 }
 

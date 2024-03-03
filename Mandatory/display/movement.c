@@ -6,11 +6,11 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:13:21 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/27 23:41:39 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/03 19:31:26 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../so_long.h"
+#include "../../so_long.h"
 
 int	key_hook(int keycode, t_mlx *params)
 {
@@ -33,6 +33,7 @@ int	key_hook(int keycode, t_mlx *params)
 		if (ft_movement(keycode, map, info.x, info.y) == 1)
 			params->moves++;
 	}
+	draw_everything_2(params);
 	return (0);
 }
 
@@ -89,47 +90,52 @@ int	ft_movement(int keycode, char **map, int x, int y)
 	return (0);
 }
 
-int	ft_enemy_movement_1(const int i, char **map, int x, int y)
+t_info	numbers_return(t_mlx params, int i)
 {
-	int	j;
+	t_info	info;
+	int		height;
+	int		width;
+	int		key;
+	char	**map;
 
-	j = 0;
-	if (map[y - 1][x] != '1' && map[y - 1][x] != 'E' && i == 1)
-		j = enemy_move(map, x, y, 1);
-	else if (map[y + 1][x] != '1' && map[y + 1][x] != 'E' && i == 2)
-		j = enemy_move(map, x, y, 2);
-	else if (map[y][x - 1] != '1' && map[y][x - 1] != 'E' && i == 3)
-		j = enemy_move(map, x, y, 3);
-	else if (map[y][x + 1] != '1' && map[y][x + 1] != 'E' && i == 4)
-		j = enemy_move(map, x, y, 4);
-	return (j);
+	map = params.map;
+	i = 64;
+	height = 0;
+	while (map[height])
+		height++;
+	width = 0;
+	while (map[0][width])
+		width++;
+	key = D;
+	info.height = height;
+	info.width = width;
+	info.x = player_position(map, 'P', 1);
+	info.y = player_position(map, 'P', 2);
+	return (info);
 }
 
-int	*ft_enemy_movement(const int *point, char **map, t_position posi)
+int	player_position(char **map, char c, int which)
 {
-	static int	*i;
-	int			j;
-	int			k;
+	int	y;
+	int	x;
 
-	i = (int *)malloc(100 * sizeof(int));
-	k = 0;
-	j = 0;
-	while (k < posi.count)
+	y = 0;
+	x = 0;
+	while (map[y] != NULL)
 	{
-		i[k] = ft_find_one(point[k], map, posi.x[k], posi.y[k]);
-		if (point[k] == 1)
-			j = ft_enemy_movement_1(point[k], map, posi.x[k], posi.y[k]);
-		else if (point[k] == 2)
-			j = ft_enemy_movement_1(point[k], map, posi.x[k], posi.y[k]);
-		else if (point[k] == 3)
-			j = ft_enemy_movement_1(point[k], map, posi.x[k], posi.y[k]);
-		else if (point[k] == 4)
-			j = ft_enemy_movement_1(point[k], map, posi.x[k], posi.y[k]);
-		if (j == 1)
-			i[0] = 15;
-		k++;
+		x = 0;
+		while (map[y][x] != '\0')
+		{
+			if (map[y][x] == c)
+			{
+				if (which == 1)
+					return (x);
+				else if (which == 2)
+					return (y);
+			}
+			x++;
+		}
+		y++;
 	}
-	free(posi.x);
-	free(posi.y);
-	return (i);
+	return (0);
 }

@@ -1,78 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sources.c                                          :+:      :+:    :+:   */
+/*   sources2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/21 20:15:25 by btvildia          #+#    #+#             */
-/*   Updated: 2024/02/27 23:03:58 by btvildia         ###   ########.fr       */
+/*   Created: 2024/02/29 18:23:00 by btvildia          #+#    #+#             */
+/*   Updated: 2024/03/02 23:24:37 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../so_long.h"
-
-void	free_window(t_mlx params)
-{
-	mlx_destroy_window(params.mlx, params.win);
-	ft_printf(GREEN "PERFECT\n" RESET);
-	exit(0);
-}
-
-t_position	enemys_positioon(char **map)
-{
-	int			y;
-	int			x;
-	t_position	pos;
-
-	y = 0;
-	x = 0;
-	pos.x = (int *)malloc(MAP_SIZE * sizeof(int));
-	pos.y = (int *)malloc(MAP_SIZE * sizeof(int));
-	pos.count = 0;
-	while (map[y] != NULL)
-	{
-		x = 0;
-		while (map[y][x] != '\0')
-		{
-			if (map[y][x] == 'S')
-			{
-				pos.x[pos.count] = x;
-				pos.y[pos.count] = y;
-				pos.count++;
-			}
-			x++;
-		}
-		y++;
-	}
-	return (pos);
-}
-
-int	player_position(char **map, char c, int which)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	x = 0;
-	while (map[y] != NULL)
-	{
-		x = 0;
-		while (map[y][x] != '\0')
-		{
-			if (map[y][x] == c)
-			{
-				if (which == 1)
-					return (x);
-				else if (which == 2)
-					return (y);
-			}
-			x++;
-		}
-		y++;
-	}
-	return (0);
-}
+#include "../../so_long.h"
 
 int	from_zero(char **map, int *previous_c)
 {
@@ -117,4 +55,30 @@ int	c_count(char **map)
 		i++;
 	}
 	return (c);
+}
+
+int	exit_game(void)
+{
+	exit(0);
+	return (0);
+}
+
+void	free_window(t_mlx params)
+{
+	mlx_destroy_window(params.mlx, params.win);
+	exit(0);
+}
+
+void	free_map(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+	ft_error();
 }
