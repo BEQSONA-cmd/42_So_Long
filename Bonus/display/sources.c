@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:15:25 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/02 23:24:32 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:47:21 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ t_position	enemys_positioon(char **map)
 
 	y = 0;
 	x = 0;
-	pos.x = (int *)malloc(MAP_SIZE * sizeof(int));
-	pos.y = (int *)malloc(MAP_SIZE * sizeof(int));
+	pos.x = ft_malloc(MAP_SIZE * sizeof(int));
+	pos.y = ft_malloc(MAP_SIZE * sizeof(int));
 	pos.count = 0;
 	while (map[y] != NULL)
 	{

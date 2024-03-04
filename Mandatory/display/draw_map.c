@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:12:40 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/03 19:32:01 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:26:43 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	draw_map_all(t_mlx *p, t_texture t)
 	info = numbers_return(*p, 0);
 	y = 0;
 	draw_wall_floor(p, info.height, info.width, y);
+	y = 0;
 	while (y < info.height)
 	{
 		x = 0;
@@ -54,9 +55,9 @@ int	draw_map_all(t_mlx *p, t_texture t)
 		{
 			if (p->map[y][x] == 'P')
 				mlx_put_image_to_window(p->mlx, p->win, t.pac, x * TS, y * TS);
-			if (p->map[y][x] == 'C')
+			else if (p->map[y][x] == 'C')
 				mlx_put_image_to_window(p->mlx, p->win, t.coin, x * TS, y * TS);
-			if (p->map[y][x] == 'E')
+			else if (p->map[y][x] == 'E')
 				mlx_put_image_to_window(p->mlx, p->win, t.exit, x * TS, y * TS);
 			x++;
 		}

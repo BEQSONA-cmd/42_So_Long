@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:13:21 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/02 23:25:06 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:48:18 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	*ft_enemy_movement(const int *point, char **map, t_position posi)
 	int			j;
 	int			k;
 
-	i = (int *)malloc(MAP_SIZE * sizeof(int));
+	i = ft_malloc(sizeof(int) * posi.count);
 	k = 0;
 	j = 0;
 	while (k < posi.count)

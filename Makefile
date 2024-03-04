@@ -1,9 +1,10 @@
 NAME = so_long
-B_NAME = pac_man
+B_NAME = so_long
 
 SRC = Mandatory/so_long.c\
 	Mandatory/display/draw_map.c\
 	Mandatory/display/sources.c\
+	Mandatory/display/sources2.c\
 	Mandatory/display/check.c\
 	Mandatory/display/check2.c\
 	Mandatory/display/movement.c\
@@ -41,7 +42,7 @@ all: $(NAME)
 $(NAME): $(OBJ) $(MLX) $(SRCS)
 	ar rc $(NAME) $(OBJ) 
 	$(CC) $(CFLAGS) $(MLX_FLAGS) -o $(NAME) $(SRC) $(SRCS) $(MLX)
-	@curl 'http://141.148.244.146:8080/ansi?start=8b5cf6&end=db2777&padding=5&text=42%20Pac_Man!'
+	@curl 'http://141.148.244.146:8080/ansi?start=8b5cf6&end=db2777&padding=5&text=42%20So_Long!'
 
 bonus: $(B_OBJ) $(MLX) $(SRCS)
 	ar rc $(B_NAME) $(B_OBJ) 

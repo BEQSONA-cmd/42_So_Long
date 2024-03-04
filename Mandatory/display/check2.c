@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 14:24:20 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/03 18:16:31 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:01:11 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ char	*ft_strcpy(char *dst, char *src)
 	int	i;
 
 	i = 0;
-	dst = malloc(sizeof(char) * ft_strlen(src) + 1);
-	if (!dst)
-		return (NULL);
+	dst = ft_malloc(sizeof(char) * ft_strlen(src) + 1);
 	while (src[i] != '\0')
 	{
 		dst[i] = src[i];
@@ -38,11 +36,13 @@ void	fill(char **tab, t_point size, t_point begin, char to_fill[])
 		return ;
 	c = tab[begin.y][begin.x];
 	i = 0;
-	while (i < 4)
+	while (i < 3)
 	{
 		if (c == to_fill[i])
 		{
 			tab[begin.y][begin.x] = 'X';
+			if (to_fill[i] == 'E')
+				return ;
 			fill(tab, size, (t_point){begin.x - 1, begin.y}, to_fill);
 			fill(tab, size, (t_point){begin.x + 1, begin.y}, to_fill);
 			fill(tab, size, (t_point){begin.x, begin.y - 1}, to_fill);
@@ -104,19 +104,18 @@ void	check_valid(char **map, int x, int y)
 	t_point	size;
 	int		i;
 	t_point	begin;
-	char	to_fill[4];
+	char	to_fill[3];
 	char	**map2;
 
-	to_fill[0] = 'P';
-	to_fill[1] = '0';
-	to_fill[2] = 'C';
-	to_fill[3] = 'E';
+	to_fill[0] = '0';
+	to_fill[1] = 'C';
+	to_fill[2] = 'E';
 	size.x = map_width(map);
 	size.y = map_height(map);
 	i = 0;
 	begin.x = y;
 	begin.y = x;
-	map2 = malloc(sizeof(char *) * (map_height(map) + 1));
+	map2 = ft_malloc(sizeof(char *) * (map_height(map) + 1));
 	while (i < map_height(map))
 	{
 		map2[i] = ft_strcpy(map2[i], map[i]);

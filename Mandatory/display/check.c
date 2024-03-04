@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 20:54:20 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/03 18:15:11 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:09:58 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	check_double(char **c, char a)
 			if (c[i][j] == a)
 			{
 				x++;
-				if (x > 2)
+				if (x > 2 || e_find(c) != 1 || c_count(c) < 1)
 					free_map(c);
 			}
 			j++;

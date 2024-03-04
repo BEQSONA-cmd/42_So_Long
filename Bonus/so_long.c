@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:50:24 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/03 16:16:05 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:46:57 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ char	**get_map(char *av)
 	free(c);
 	if (fd == -1)
 		ft_error();
-	map = malloc(sizeof(char *) * MAP_SIZE);
-	if (!map)
-		return (NULL);
+	map = ft_malloc(sizeof(char *) * MAP_SIZE);
 	i = 0;
 	while (1)
 	{
@@ -50,14 +48,10 @@ t_mlx	*get_param(char *av[])
 {
 	t_mlx	*par;
 
-	par = malloc(sizeof(t_mlx));
-	if (!par)
-		return (NULL);
+	par = ft_malloc(sizeof(t_mlx));
 	par->map = get_map(av[1]);
 	par->frame = 0;
-	par->temp_j = malloc(MAP_SIZE * sizeof(int *));
-	if (!par->temp_j)
-		return (NULL);
+	par->temp_j = ft_malloc(sizeof(int) * 2);
 	par->temp_j[0] = 1;
 	par->mlx = mlx_init();
 	par->keycode = D;

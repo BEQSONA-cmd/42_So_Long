@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 22:50:10 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/03 19:31:45 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:41:58 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "src/ft_printf.h"
 # include <fcntl.h>
 # include <math.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
@@ -93,8 +92,6 @@ typedef struct s_texture
 
 void		ft_error(void);
 int			exit_game(void);
-void		draw_everything_2(t_mlx *p);
-int			draw_map_all(t_mlx *p, t_texture t);
 int			e_find(char **map);
 int			draw_win(t_mlx *p);
 char		**get_map(char *av);
@@ -108,13 +105,16 @@ t_numbers	get_numbers(t_mlx *p);
 t_mlx		*get_param(char *av[]);
 int			map_height(char **map);
 void		check_square(char **c);
+void		*ft_malloc(size_t size);
 int			check_level(char *level);
 void		free_window(t_mlx params);
 int			draw_everything(t_mlx *p);
+void		draw_everything_2(t_mlx *p);
 t_position	enemys_positioon(char **map);
 void		check_double(char **c, char a);
 int			*point_return(char **map, int *j);
 int			if_equals(int j, int e_x, int p_x);
+int			draw_map_all(t_mlx *p, t_texture t);
 t_info		numbers_return(t_mlx params, int i);
 int			key_hook(int keycode, t_mlx *params);
 void		check_valid(char **map, int x, int y);

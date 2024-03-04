@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 12:53:52 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/03 16:33:49 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:48:09 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	*point_return(char **map, int *j)
 	posi = enemys_positioon(map);
 	p_x = player_position(map, 'P', 1);
 	p_y = player_position(map, 'P', 2);
-	i = (int *)malloc(posi.count * sizeof(int));
+	i = ft_malloc(posi.count * sizeof(int));
 	while (k < posi.count)
 	{
 		if (posi.y[k] > p_y)

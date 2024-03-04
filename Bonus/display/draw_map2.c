@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:52:23 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/02 23:54:10 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:41:30 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,4 +118,14 @@ int	draw_loose(t_mlx *p)
 		/ 2 - j / 2);
 	mlx_destroy_image(p->mlx, los);
 	return (0);
+}
+
+void	*ft_malloc(size_t size)
+{
+	void	*ptr;
+
+	ptr = malloc(size);
+	if (!ptr)
+		ft_error();
+	return (ptr);
 }

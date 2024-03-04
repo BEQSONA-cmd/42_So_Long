@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:13:21 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/03 19:31:26 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:32:54 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ int	key_hook(int keycode, t_mlx *params)
 		if (exit_check(keycode, map, info.x, info.y) == 1)
 			mlx_loop_hook(params->mlx, draw_win, (void *)params);
 		if (ft_movement(keycode, map, info.x, info.y) == 1)
+		{
+			ft_printf("Moves: %d\n", params->moves);
 			params->moves++;
+		}
 	}
 	draw_everything_2(params);
 	return (0);

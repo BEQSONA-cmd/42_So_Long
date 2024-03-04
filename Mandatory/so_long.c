@@ -6,23 +6,11 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:14:14 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/03 19:19:12 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:00:58 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
-
-int	exit_game(void)
-{
-	exit(0);
-	return (0);
-}
-
-void	ft_error(void)
-{
-	write(2, "Error\n", 6);
-	exit(1);
-}
 
 char	**get_map(char *av)
 {
@@ -36,9 +24,7 @@ char	**get_map(char *av)
 	free(c);
 	if (fd == -1)
 		ft_error();
-	map = malloc(sizeof(char *) * MAP_SIZE);
-	if (!map)
-		return (NULL);
+	map = ft_malloc(sizeof(char *) * MAP_SIZE);
 	i = 0;
 	while (1)
 	{
@@ -56,9 +42,7 @@ t_mlx	*get_param(char *av[])
 {
 	t_mlx	*par;
 
-	par = malloc(sizeof(t_mlx));
-	if (!par)
-		return (NULL);
+	par = ft_malloc(sizeof(t_mlx));
 	par->map = get_map(av[1]);
 	par->mlx = mlx_init();
 	par->keycode = D;
