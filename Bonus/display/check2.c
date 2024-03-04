@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 14:24:20 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/04 16:47:05 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 20:17:00 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	fill(char **tab, t_point size, t_point begin, char to_fill[])
 		return ;
 	c = tab[begin.y][begin.x];
 	i = 0;
-	while (i < 4)
+	while (i < 5)
 	{
 		if (c == to_fill[i])
 		{
@@ -104,18 +104,19 @@ void	check_valid(char **map, int x, int y)
 	t_point	size;
 	int		i;
 	t_point	begin;
-	char	to_fill[4];
+	char	to_fill[5];
 	char	**map2;
 
-	to_fill[0] = '0';
-	to_fill[1] = 'C';
-	to_fill[2] = 'E';
-	to_fill[3] = 'S';
+	to_fill[0] = 'P';
+	to_fill[1] = '0';
+	to_fill[2] = 'C';
+	to_fill[3] = 'E';
+	to_fill[4] = 'S';
 	size.x = map_width(map);
 	size.y = map_height(map);
 	i = 0;
-	begin.x = y;
-	begin.y = x;
+	begin.x = x;
+	begin.y = y;
 	map2 = ft_malloc(sizeof(char *) * (map_height(map) + 1));
 	while (i < map_height(map))
 	{

@@ -6,7 +6,7 @@
 /*   By: btvildia <btvildia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 20:54:20 by btvildia          #+#    #+#             */
-/*   Updated: 2024/03/04 16:11:45 by btvildia         ###   ########.fr       */
+/*   Updated: 2024/03/04 20:37:29 by btvildia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	check_ones(char **c)
 			free_map(c);
 		j++;
 	}
+	if (e_find(c) != 1 || c_count(c) < 1)
+		free_map(c);
 	check_double(c, 'P');
 	check_double(c, 'E');
 	check_square(c);
