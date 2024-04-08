@@ -1,4 +1,4 @@
-# Push_Swap
+# So_Long
 ```
 42_Courses : So_Long (125%)
 ```
