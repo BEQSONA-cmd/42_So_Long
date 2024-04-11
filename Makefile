@@ -40,14 +40,10 @@ SRCS = ./src/srcs.a
 all: $(NAME)
 
 $(NAME): $(OBJ) $(MLX) $(SRCS)
-	ar rc $(NAME) $(OBJ) 
 	$(CC) $(CFLAGS) $(MLX_FLAGS) -o $(NAME) $(SRC) $(SRCS) $(MLX)
-	@curl 'http://141.148.244.146:8080/ansi?start=8b5cf6&end=db2777&padding=5&text=42%20So_Long!'
 
 bonus: $(B_OBJ) $(MLX) $(SRCS)
-	ar rc $(B_NAME) $(B_OBJ) 
 	$(CC) $(CFLAGS) $(MLX_FLAGS) -o $(B_NAME) $(B_SRC) $(SRCS) $(MLX)
-	@curl 'http://141.148.244.146:8080/ansi?start=8b5cf6&end=db2777&padding=5&text=42%20Pac_Man!'
 
 $(MLX):
 	make -C $(MLX_DIR)
